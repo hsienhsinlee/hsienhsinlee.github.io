@@ -1,0 +1,53 @@
+							<tr><td><img src='/img/w_bg.gif' width=1px height=50px></td></tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td align=center>
+						<img src='/img/4_bg.gif' width=760px height=1px>
+					</td>
+				</tr>
+				<tr>
+					<td align=center>						
+						<table width=100%>
+							<tr>
+								<td width=10px></td>
+								<td align=left valign=top>
+									<span class=mars4_>
+									266 Ferst Drive, KACB 2313<br>						
+									Atlanta, GA 30332-0765
+									</span>
+								</td>
+								<td align=center valign=top>
+									<span class=mars4_>
+									You are visitor #<img src="http://users.ece.gatech.edu/cgi-bin/Count.cgi?df=mars.dat&dd=E&frgb=ffffff&ft=0&negate=F&pad=0&srgb=ffffff&prgb=ffffff" border=0>.<br>
+									</span>
+								</td>
+								<td align=right valign=top>
+									<span class=mars4_>
+									http://arch.ece.gatech.edu<br>
+									404-385-6273
+									</span>
+								</td>
+								<td width=10px></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>	
+		</td>
+		<td background='/img/4_08.gif' width=30px></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>		
+		<td colspan=3><img src='/img/4_10.gif'></td>		
+		<td></td>				
+	</tr>
+	<tr height=50px>
+		<td colspan=5>
+		</td>	
+	</tr>
+</table>
+</body>
+</html>

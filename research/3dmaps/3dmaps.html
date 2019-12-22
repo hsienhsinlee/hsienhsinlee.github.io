@@ -1,0 +1,312 @@
+<html>
+<head>
+<title>3D-MAPS Many-Core Processor</title> 
+<meta name="keywords" content="3D IC, Georgia Tech, 3D MAPS, 3D architecture, 3-D IC, 3D-MAPS">
+<meta description="description" content="3D IC architecture research using die stacking and TSV at Georgia Tech"> 
+<meta name="author" content="Hsien-Hsin Lee" />
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+</head>
+
+<style type="text/css">
+A:link{text-decoration:none}
+A:visited{text-decoration:none}
+TD{font-family: verdana; font-size: 10pt} 
+</style>
+
+<body bgcolor=white text=black link=red vlink=red alink=red>
+
+<font face="verdana" size=2>
+
+
+
+
+<h3>
+<font color=blue>
+The 3D-MAPS Many-Core Processor</font></h3>
+
+
+<h5>
+<font color=green>
+Announcements
+</font>
+</h5>
+
+
+<ul>
+<li> 10/24/11: We taped out 3D-MAPS V2 to MOSIS/Tezzaron MPW run.
+
+<li> 02/21/12: 3D-MAPS V1 is presented at ISSCC 2012. Here is our <a href=http://arch.ece.gatech.edu/pub/isscc12.pdf target=new>
+paper</a> and <a href=http://arch.ece.gatech.edu/present/isscc12.pdf target=new>presentation</a>.
+
+</ul>
+
+
+
+<h5>
+<font color=green>
+Media Coverages
+</font>
+</h5>
+
+<ul>
+<li> <a href='http://www.i-micronews.com/news/3D-MAPS-multicore-processor-closer-look,8706.html' target=new>3D-MAPS multicore processor: A closer look</a> (I-Micronews)
+
+<li> <a href='http://eda360insider.wordpress.com/2012/03/01/3d-thursday-three-on-3d-papers-from-isscc/' target=new>3D Thursday: Threee on 3D --- papers from ISSCC</a> (EDA360 Insider)
+
+<li> <a href='http://www.electroiq.com/blogs/insights_from_leading_edge/2012/04/iftle-97-date-in-dresden-synopsys-3d-eda-solution.html' target=new>3D EDA Solution</a> (Solid State Technology)
+
+<li> <a href=http://www.electroiq.com/blogs/insights_from_leading_edge/2012/03/iftle-93-2-5-3d-at-the-2012-ieee-isscc.html target=new>IFTLE 93 2.5 / 3D at the 2012 IEEE ISSCC</a> (Solid State Technology)
+
+<li> <a href='http://www.eetimes.com/electronics-news/4236570/ISSCC--Picture-from-a-silicon-exhibition?pageNumber=1' target=new>ISSCC: Pictures from a silicon exhibition</a> (EE Times)
+
+<li> <a href=http://www.theregister.co.uk/2011/12/22/isscc_2012_chip_preview/ target=new>
+New chippery on parade at ISSCC: CPU and memory makers strut their stuff</a> 
+(The Register)
+
+<li> <a href=http://www.theregister.co.uk/2012/02/24/3d_chips/page3.html target=new>
+Real apps, real benchmarks. Georgia Institute of Technology&#39;s &quot;3D-MAPS: 3D 
+massively parallel processor with stacked memory&quot;</a> (The Register)
+
+
+</ul>
+
+
+<h5>
+<font color=green>
+Overview
+</font>
+</h5>
+
+
+3D-MAPS (3D <u>MA</u>ssively <u>P</u>arallel processor with <u>S</u>tacked 
+memory) V1 is a logic+memory 2-tier 3D IC, where the logic die consists of 64 
+general purpose processor cores running at 277MHz, and the memory die contains 
+256KB SRAM. <font color=red> This 3D IC is arguably the FIRST many-core general 
+purpose 3D processor developed in academia.</font> This 3D processor achieves up 
+to 64GB/s memory bandwidth while consuming 5W power. This project is led by 
+<a href='http://users.ece.gatech.edu/limsk/'>Prof. Sung Kyu Lim</a> (PI) and <a href='http://users.ece.gatech.edu/~leehs/'>Prof. Hsien-Hsin Lee</a> (co-PI) from the Georgia 
+Institute of Technology and Dr. Gabriel Loh (co-PI) from AMD with funding from 
+the US Department of Defense. There have been 20+ students involved in this 
+project working on architecture, programming, CAD tools, circuit and physical 
+design, packaging, board design, and testing. Our collaborators include KAIST, 
+Tezzaron, Amkor Inc, and Board Lab.
+
+
+<p><img src=team.JPG><p>
+
+<p>The fabrication of this chip is completed in July 2011 using the 130nm 
+GlobalFoundies device technology and 1.2um TSV diameter Tezzaron technology. The 
+packaging is completed in August 2011 by Amkor. 8 parallel applications are 
+developed to demonstrate the bandwidth and power benefit of 3D MAPS processor. 
+This processor contains 33M transistors, 50K TSVs, and 50K face-to-face 
+connections in 5mm x 5mm footprint and 0.8mm thickness. 
+
+<p>The core architecture is developed from scratch by our architecture team to 
+benefit from single-cycle access to SRAM. One of the two instructions we issue 
+in one cycle can be memory read/write, so it is possible to access memory at 
+every clock cycle. Our RTL-to-GDSII tool chain is based on commercial tools from 
+Synopsys, Cadence, and Mentor Graphics. Since these tools can only handle 2D 
+ICs, we have developed plug-ins to handle TSVs and 3D stacking. 
+
+<p> Here is our <a href=http://arch.ece.gatech.edu/pub/cicc10.pdf target=new>
+CICC 2010</a> and <a href=http://arch.ece.gatech.edu/pub/3dtest10.pdf target=new>
+3D-TEST 2010</a> papers on 3D-MAPS V1.
+
+<p>We are currently working on 3D-MAPS V2 that features 128 cores and 2GB DRAM 
+stacked in 5 dies. Here are the differences:<p>
+
+<table border=1>
+ <tr> 
+ 	<td></td>
+ 	<td align=center><font color=blue>3D-MAPS V1</td>
+	<td align=center><font color=blue>3D-MAPS V2</td>
+ </tr>
+ <tr> 
+ 	<td># of tiers</td>
+ 	<td align=center>2, one logic and one SRAM</td>
+	<td align=center>5, two logic and three DRAM</td>
+ </tr>
+ <tr> 
+ 	<td># of cores</td>
+ 	<td align=center>64</td>
+	<td align=center>128</td>
+ </tr>
+ <tr> 
+ 	<td>logic footprint</td>
+ 	<td align=center>5mm x 5mm</td>
+	<td align=center>10mm x 10mm</td>
+ </tr>
+ <tr> 
+ 	<td>DRAM footprint</td>
+ 	<td align=center>-</td>
+	<td align=center>20mm x 12mm</td>
+ </tr>
+ <tr> 
+ 	<td>device technology</td>
+ 	<td align=center>130nm, Globalfoundries</td>
+	<td align=center>130nm, Globalfoundries</td>
+ </tr>
+ <tr> 
+ 	<td>bonding style</td>
+ 	<td align=center>face-to-face</td>
+	<td align=center>face-to-face &amp; face-to-back</td>
+ </tr>
+ <tr> 
+ 	<td>TSV technology</td>
+ 	<td align=center>Tezzaron, 1.2um diam</td>
+	<td align=center>Tezzaron, 1.2um diam</td>
+ </tr>
+ </table> 
+
+
+<h5>
+<font color=green>
+3D-MAPS V1 Specifications
+</font>
+</h5>
+
+<p><img src=spec.jpg><p>
+
+
+<h5>
+<font color=green>
+3D-MAPS V1 Measurement Results
+</font>
+</h5>
+
+3D-MAPS V1 supports 42 instructions, and we wrote 8 parallel applications and 
+ran them on our chip. Here are the memory bandwidth and power measurement 
+results.<p>
+
+<table border=1>
+ <tr> 
+ 	<td>application</td>
+ 	<td align=center>memory BW (GB/s)</td>
+	<td align=center>power consumption (W)</td>
+ </tr>
+ <tr> 
+ 	<td>AES encryption</td>
+ 	<td align=center>49.5</td>
+	<td align=center>4.032</td>
+ </tr>
+ <tr> 
+ 	<td>edge detection</td>
+ 	<td align=center>15.6</td>
+	<td align=center>3.768</td>
+ </tr>
+ <tr> 
+ 	<td>histogram</td>
+ 	<td align=center>30.3</td>
+	<td align=center>3.588</td>
+ </tr>
+ <tr> 
+ 	<td>k-means clustering</td>
+ 	<td align=center>40.6</td>
+	<td align=center>4.014</td>
+ </tr>
+ <tr> 
+ 	<td>matrix multiply</td>
+ 	<td align=center>13.8</td>
+	<td align=center>3.789</td>
+ </tr>
+ <tr> 
+ 	<td>median filter</td>
+ 	<td align=center><font color=red>63.8</font></td>
+	<td align=center><font color=red>4.007</font></td>
+ </tr>
+ <tr> 
+ 	<td>motion estimation</td>
+ 	<td align=center>24.1</td>
+	<td align=center>3.830</td>
+ </tr>
+ <tr> 
+ 	<td>string search</td>
+ 	<td align=center>8.9</td>
+	<td align=center>3.876</td>
+ </tr>
+ </table> 
+
+<p>The theoretical maximum memory bandwidth 3D-MAPS V1 can achieve is 70.9GB/s, 
+which is computed by 277MHz x 64 (cores) x 4 Bytes (1 word). One of our 
+applications, median filter, got very close to this theoretical value at the 
+lowest power consumption. As a comparison, here are the maximum achievable 
+bandwidth values of the state-of-the-art processor and memory technology (as of 
+Sep 2011):
+<ul>
+<li> Intel i7 Extreme Edition + Samsung DDR3 1600 MHz = 1600 MHz x 2 ch x 8 
+Bytes = 25.6 GB/s
+<li> Intel Xeon E7 + Samsung DDR3 1066 MHz = 1066 MHz x 4 ch x 8 Bytes = 34.1 
+GB/s
+</ul>
+
+3D-MAPS V1 is fabricated in 130nm technology in 5mm x 5mm footprint. If 3D-MAPS 
+V1 is fabricated in 45nm in 15mm x 15mm footprint (as in Intel i7), the maximum 
+memory bandwidth skyrockets as follows:
+
+<ul>
+<li> 277 MHz X 5 (speedup from 45nm) x 64 ch x 9 (more area) x 4 (smaller cores) 
+x 4 Bytes = <font color=red>12,764 GB/s</font>
+</ul>
+This truly demonstrates the enormous memory bandwidth benefit of core+memory 3D 
+IC.
+
+<h5>
+<font color=green>
+3D-MAPS V1 Photos
+</font>
+</h5>
+
+<font color=blue>
+<img src=3D-MAPS-V1-fig8.jpg><br>FIGURE 1: This is the stacking information of 
+3D-MAPS V1. We use bonding wires and TSVs for the package-to-chip signal and P/G 
+delivery. Chip-to-chip communication is done using F2F pads. The bonding wires 
+did not break the TSVs underneath during manufacturing. Each IO cell contains 
+204 redundant TSVs.<p>
+
+<img src=3D-MAPS-V1-fig1.JPG><br><font color=blue>FIGURE 2: The topside of 
+3D-MAPS V1 is actually the backside of the core die that is thinned down to 
+12um. With bare eyes, we can only see dummy TSVs and IO cells.<p>
+
+<img src=3D-MAPS-V1-fig3.JPG><br>FIGURE 3: SEM image of Tezzaron TSVs and 
+face-to-face bond pads.<p>
+
+<img src=3D-MAPS-V1-fig10.jpg><br>FIGURE 4: More SEM images of TSVs and F2F 
+pads.<p>
+
+<img src=3D-MAPS-V1-fig4.png><br>FIGURE 5: The above image is obtained using an 
+infrared microscope with 6um depth. Since the top surface of 3D-MAPS V1 is the 
+thinned substrate of top die, we had to use an IR microscope to reveal the 
+circuitry that is buried under this substrate. The white dots are dummy TSVs we 
+had to add to satisfy the TSV density rule set by Tezzaron.<p>
+
+<img src=3D-MAPS-V1-fig7.jpg><br>FIGURE 6: Some details of single core and 
+single IO cell.<p>
+
+
+<img src=3D-MAPS-V1-fig2.JPG><br>FIGURE 7: Bare die and its package 
+side-by-side.<p>
+
+
+<img src=3D-MAPS-V1-fig5.JPG><br>FIGURE 8: The open TSV above, fortunately, does 
+not cause any problem because all of the TSVs shown are redundant. The top die 
+(= core die) is thinned down to 12um, and the bottom die (= memory die) height 
+is 765um, making the total thickness to be roughly 0.8mm.<p>
+
+<img src=3D-MAPS-V1-fig6.JPG><br>FIGURE 9: A dummy TSV<p>
+
+
+
+<img src=3D-MAPS-V1-fig9.jpg><br>FIGURE 10: Layouts of full-die (core and 
+memory) and single core/memory tile.<p>
+
+</font>
+
+
+<p>
+<td width=60 align=right>
+<img src="/cgi-bin/Count.cgi?df=3d-maps.dat&dd=E&ft=2">
+</td>
+
+<p>
+</b></font>
+</body>
