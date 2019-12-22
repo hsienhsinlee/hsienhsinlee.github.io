@@ -8,7 +8,7 @@ sub shellCmd {
 sub publicationByProject{
 	my $targetHtmlFileName = shift;
 	my $publicationManagerID = shift;
-       
+
 	if ($targetHtmlFileName == "3d") {
 		shellCmd( "cat research-head-3d.html > temp.html" );
         }
@@ -25,7 +25,7 @@ sub publicationByProject{
 
 }
 
-sub publicationByDate { 
+sub publicationByDate {
 	my $targetHtmlFileName = shift;
 	my $publicationManagerID = shift;
 	my $title = shift;
@@ -55,24 +55,24 @@ sub publicationByName {
 
 }
 
-sub publicationByField { 
+sub publicationByField {
 
 	my @types = ( "all", "journal", "conference", "workshop+poster", "bookchapters", "thesis" );
 	my @fields = ( "all", "uarch", "secure", "embed", "lpower", "fpga", "soc", "parallel", "gfx" );
 
-	my @type_title = ( 
-				"All Papers", 
-				"Journal Articles", 
-				"Conference Papers", 
-				"Workshop and Poster", 
+	my @type_title = (
+				"All Papers",
+				"Journal Articles",
+				"Conference Papers",
+				"Workshop and Poster",
 				"Book Chapters",
 				"Theses"
 			);
 
-	my @field_title = ( 
-				"All Technical Papers (by date)", 
-				"Conventional Processor Architecture and Compilers, Performance Modeling", 
-				"Secure, Dependable and Autonomic Computing, DRM", 
+	my @field_title = (
+				"All Technical Papers (by date)",
+				"Conventional Processor Architecture and Compilers, Performance Modeling",
+				"Secure, Dependable and Autonomic Computing, DRM",
 				"Embedded Computing",
 				"Low-Power Techniques",
 				"FPGA Techniques",
@@ -121,7 +121,7 @@ sub publicationByField {
 		$type_index = $type_index + 1;
 	}
 
-	
+
 }
 
 shellCmd( "javac PublicationManager.java" );
@@ -173,5 +173,3 @@ publicationByField();
 #publicationByField( "soc", "soc", "3D ICs, SoC, Physical Design and EDA Tools" );
 #publicationByField( "parallel", "parallel", "Multicore, Parallel Architecture and Systems" );
 #publicationByField( "gfx", "gfx", "Support for 3D Graphics" );
-
-
