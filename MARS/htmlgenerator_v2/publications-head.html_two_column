@@ -7,22 +7,22 @@
 <table align=center valign=middle cellpadding=0 cellspacing=0>
 	<tr height=50px>
 		<td colspan=5>
-		</td>	
+		</td>
 	</tr>
 	<tr>
 		<td></td>
-		<td colspan=3><img src='/img/4_03.gif'></td>		
+		<td colspan=3><img src='/img/4_03.gif'></td>
 		<td></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td background='/img/4_05.gif' width=30px></td>
 		<td bgcolor=#ffffff>
-			<table width=780px align=center valign=middle cellpadding=0 cellspacing=0>					
-				<tr>		
+			<table width=780px align=center valign=middle cellpadding=0 cellspacing=0>
+				<tr>
 					<td>
-						<table width=100% cellpadding=0 cellspacing=0>							
-							<tr>							
+						<table width=100% cellpadding=0 cellspacing=0>
+							<tr>
 								<td align=left>
 									<img src='/img/4_06.gif'>
 								</td>
@@ -34,8 +34,8 @@
 							</tr>
 						</table>
 					</td>
-					
-				</tr>	
+
+				</tr>
 				<tr>
 					<td align=center>
 						<img src='/img/w_bg.gif' width=1px height=3px><br>
@@ -46,19 +46,19 @@
 					<td align=center>
 						<table width=760px>
 							<tr>
-								<td align=left width=50%><span class=mars4_><a href='http://www.gatech.edu'>Georgia Tech</a> > <a href='http://www.coe.gatech.edu'>CoE</a> > <a href='http://www.ece.gatech.edu'>ECE</a> > <a href='/index.html'>MARS</a></span></td>
-								<td align=right width=50%><span class=mars4_>[ <a href='/mars.html'>MARS</a> | <a href='/people.html'>People</a> | <a href='/research.html'>Research</a> | Publications ]</span></td>
+								<td align=left width=50%><span class=mars4_><a href='http://www.gatech.edu'>Georgia Tech</a> > <a href='http://www.coe.gatech.edu'>CoE</a> > <a href='http://www.ece.gatech.edu'>ECE</a> > <a href='/MARS/index.html'>MARS</a></span></td>
+								<td align=right width=50%><span class=mars4_>[ <a href='/MARS/mars.html'>MARS</a> | <a href='/MARS/people.html'>People</a> | <a href='/MARSresearch.html'>Research</a> | Publications ]</span></td>
 							</tr>
 						</table>
 					</td>
-				</tr>				
+				</tr>
 				<tr>
 					<td align=center>
 						<table width=700px cellspacing=1 cellpadding=1>
 							<tr><td><img src='/img/w_bg.gif' width=1px height=10px></td></tr>
 							<tr>
 								<td align=left>
-<img src='/img/w_bg.gif' width=1px height=50px><br>					
+<img src='/img/w_bg.gif' width=1px height=50px><br>
 									<table width=700px class=mars4_>
 										<tr>
 											<td>
@@ -79,7 +79,7 @@
 <a href='/publications/(field)_workshop+poster.html'>Workshop and Poster Papers Only</a><br>
 <a href='/publications/(field)_thesis.html'>Theses Only</a>
 											</td>
-	
+
 										</tr>
 									</table>
 								</td>
