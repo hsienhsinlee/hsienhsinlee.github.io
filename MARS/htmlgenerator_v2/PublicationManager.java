@@ -22,7 +22,7 @@ class PublicationManager {
 	static Vector thesisList = new Vector();
 	static String pdfPath = "../pub/";
 	static String slidePath = "../present/";
-	
+
 	static int NONE = 0;
 	static int PDF = 1;
 	static int PPS = 2;
@@ -69,7 +69,7 @@ class PublicationManager {
 		generateByName( "Joonho", "Baek", "Joonho", MS );
 		generateByName( "Chinnakrishnan", "Ballapuram", "Chinnak", PhD );
 		generateByName( "Nishank", "Chandawala", "Nishank", MS );
-		generateByName( "Mrinmoy", "Ghosh", "Mrinmoy", PhD );	
+		generateByName( "Mrinmoy", "Ghosh", "Mrinmoy", PhD );
 		generateByName( "Nob", "Kladjarern", "Nob", MS );
 		generateByName( "Dean", "Lewis", "Dean", PhD );
 		generateByName( "Fayez", "Mohamood", "Fayez", MS);
@@ -159,12 +159,12 @@ class PublicationManager {
 		int startIndex;
 
 		try {
-	
-			BufferedReader br = new BufferedReader( new FileReader( "mars.bib" ) ); 
+
+			BufferedReader br = new BufferedReader( new FileReader( "mars.bib" ) );
 			String currentYear = new String();
-	
+
 			while( ( line = br.readLine() ) != null ) {
-	
+
 				if ( line.startsWith( "Year " ) ) {
 					currentYear = line.substring( 5 );
 					br.readLine();
@@ -190,7 +190,7 @@ class PublicationManager {
 					paper.bookTitle = br.readLine().trim();
 					paper.bookDetails = br.readLine().trim();
 					paper.etc = br.readLine().trim();
-					
+
 					File pdf = new File( pdfPath + paper.id + ".pdf" );
 					File pps = new File( slidePath + paper.id + ".pps" );
 					File ppt = new File( slidePath + paper.id + ".ppt" );
@@ -241,14 +241,14 @@ class PublicationManager {
 		sb.append( "<!-- start of generated html code-->\n" );
 
 		try {
-	
+
 			sb.append( "<tr><td align=center><span class=mars4t><b><br><br><br>" )
 			  .append( title )
 			  .append( "<br></b></span></td></tr>\n" )
 			  .append( "<tr><td><table width=100%>\n" );
 
 			{
-	
+
 				for ( int i = 0; i < allList.size(); i++ ) {
 					paper = (Papers) allList.elementAt(i);
 					if ( typeName.indexOf( paper.type ) >= 0 ) {
@@ -268,7 +268,7 @@ class PublicationManager {
 							  .append( paper.where )
 							  .append( "</a>" );
 						}
-						else 
+						else
 							sb.append( paper.where );
 
 						sb.append( "</span></td>" )
@@ -290,23 +290,23 @@ class PublicationManager {
 							  .append( "<font color=red>" )
 							  .append( paper.etc )
 							  .append( "</font>)");
-						}	
-						if ( paper.pdf == PDF ) sb.append( "<br>[<a href='/pub/" + paper.id + ".pdf'>pdf</a>]");
+						}
+						if ( paper.pdf == PDF ) sb.append( "<br>[<a href='/MARS/pub/" + paper.id + ".pdf'>pdf</a>]");
 						if ( paper.slide == PPS ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".pps'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".pps'>slides</a>]");
 						}
 						else if ( paper.slide == PPT ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".ppt'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".ppt'>slides</a>]");
 						}
 						else if ( paper.slide == PPTX ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".pptx'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".pptx'>slides</a>]");
 						}
 						else if ( paper.slide == PDF ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".pdf'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".pdf'>slides</a>]");
 						}
 						sb.append( "</span></td></tr>\n" );
 					}
@@ -330,17 +330,17 @@ class PublicationManager {
 		Papers paper;
 		String id;
 		int count = 0;
-		
+
 		try {
 			sb.append( "<!-- start of generated html code-->\n" );
 			sb.append( "<tr><td align=left><span class=mars3t><b><br><br><br>" )
 			  .append( title )
 			  .append( "<br><br></b></span></td></tr>\n" )
 			  .append( "<tr><td><table width=100%>\n" );
-			
+
 			{
 				for ( int i = 0; i < allList.size(); i++ ) {
-					paper = (Papers) allList.elementAt(i);	
+					paper = (Papers) allList.elementAt(i);
 					if ( ( paper.field.indexOf( project ) >= 0 ) && ( typeName.indexOf( paper.type ) >= 0 ) ) {
 						count++;
 						sb.append( "<tr><td width=15% valign=top><span class=mars3_>" );
@@ -349,10 +349,10 @@ class PublicationManager {
 							  .append( paper.where )
 							  .append( "</a>" );
 						}
-						else 
+						else
 							sb.append( paper.where );
 
-						sb.append( "</span></td>" ) 
+						sb.append( "</span></td>" )
 						  .append( "<td align='justify'><span class=mars3_>" )
 						  .append( paper.author )
 						  .append( ". \"<b>" )
@@ -372,23 +372,23 @@ class PublicationManager {
 							  .append( "<font color=red>" )
 							  .append( paper.etc )
 							  .append( "</font>)");
-						}	
-						if ( paper.pdf == PDF ) sb.append( "<br>[<a href='/pub/" + paper.id + ".pdf'>pdf</a>]");
+						}
+						if ( paper.pdf == PDF ) sb.append( "<br>[<a href='/MARS/pub/" + paper.id + ".pdf'>pdf</a>]"); /* Hsien-Hsin Sean Lee changed the root directory */
 						if ( paper.slide == PPS ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".pps'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".pps'>slides</a>]"); /* Hsien-Hsin Sean Lee changed the root directory */
 						}
 						else if ( paper.slide == PPT ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".ppt'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".ppt'>slides</a>]");
 						}
 						else if ( paper.slide == PPTX ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".pptx'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".pptx'>slides</a>]");
 						}
 						else if ( paper.slide == PDF ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".pdf'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".pdf'>slides</a>]");
 						}
 						sb.append( "</span></td></tr>\n" );
 					}
@@ -404,7 +404,7 @@ class PublicationManager {
 		catch(Exception e) {
 			System.err.println( e );
 		}
-		
+
 	}
 
 
@@ -413,17 +413,17 @@ class PublicationManager {
 		Papers paper;
 		String id;
 		int count = 0;
-		
+
 		try {
 			sb.append( "<!-- start of generated html code-->\n" );
 			sb.append( "<tr><td align=center><span class=mars4t><b><br><br><br>" )
 			  .append( title )
 			  .append( "<br><br></b></span></td></tr>\n" )
 			  .append( "<tr><td><table width=100%>\n" );
-			
+
 			{
 				for ( int i = 0; i < allList.size(); i++ ) {
-					paper = (Papers) allList.elementAt(i);	
+					paper = (Papers) allList.elementAt(i);
 					if ( ( paper.field.indexOf( field ) >= 0 ) && ( typeName.indexOf( paper.type ) >= 0 ) ) {
 						count++;
 						sb.append( "<tr><td width=15% valign=top><span class=mars4_>" );
@@ -432,10 +432,10 @@ class PublicationManager {
 							  .append( paper.where )
 							  .append( "</a>" );
 						}
-						else 
+						else
 							sb.append( paper.where );
 
-						sb.append( "</span></td>" ) 
+						sb.append( "</span></td>" )
 						  .append( "<td align='justify'><span class=mars4_>" )
 						  .append( paper.author )
 						  .append( ". \"<b>" )
@@ -455,23 +455,23 @@ class PublicationManager {
 							  .append( "<font color=red>" )
 							  .append( paper.etc )
 							  .append( "</font>)");
-						}	
-						if ( paper.pdf == PDF ) sb.append( "<br>[<a href='/pub/" + paper.id + ".pdf'>pdf</a>]");
+						}
+						if ( paper.pdf == PDF ) sb.append( "<br>[<a href='/MARS/pub/" + paper.id + ".pdf'>pdf</a>]");
 						if ( paper.slide == PPS ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".pps'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".pps'>slides</a>]");
 						}
 						else if ( paper.slide == PPT ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".ppt'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".ppt'>slides</a>]");
 						}
 						else if ( paper.slide == PPTX ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".pptx'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".pptx'>slides</a>]");
 						}
 						else if ( paper.slide == PDF ) {
 							if ( paper.pdf == NONE ) sb.append( "<br>" );
-							sb.append( " [<a href='/present/" + paper.id + ".pdf'>slides</a>]");
+							sb.append( " [<a href='/MARS/present/" + paper.id + ".pdf'>slides</a>]");
 						}
 						sb.append( "</span></td></tr>\n" );
 					}
@@ -487,7 +487,7 @@ class PublicationManager {
 		catch(Exception e) {
 			System.err.println( e );
 		}
-		
+
 	}
 
 	private static void author(String title, String firstName, String lastName, String typeName, String fileName) {
@@ -495,7 +495,7 @@ class PublicationManager {
 		Papers paper;
 		int startIndex, endIndex;
 		int count = 0;
-		
+
 		try {
 			sb.append( "<!-- start of generated html code-->\n" );
 			sb.append( "<tr><td align=center><span class=mars2t><b><br><br><br>" )
@@ -503,7 +503,7 @@ class PublicationManager {
 			  .append( "<br><br></b></span></td></tr>\n" )
 			  .append( "<tr><td><table width=100%>\n" );
 			for ( int i = 0; i < allList.size(); i++ ) {
-				paper = (Papers) allList.elementAt(i);	
+				paper = (Papers) allList.elementAt(i);
 				if ( ( ( startIndex = paper.author.indexOf( firstName ) ) >= 0 ) && ( paper.author.indexOf( lastName ) >= 0 ) && ( typeName.indexOf( paper.type ) >= 0 ) ) {
 					count++;
 
@@ -515,7 +515,7 @@ class PublicationManager {
 						  .append( paper.where )
 						  .append( "</a>" );
 					}
-					else 
+					else
 						sb.append( paper.where );
 
 					sb.append( "</span></td>" )
@@ -527,7 +527,7 @@ class PublicationManager {
 						sb.append( paper.author.substring( startIndex, endIndex ) )
 						  .append( "</b>" )
 						  .append( paper.author.substring( endIndex ) );
-					}	
+					}
 					// the last author
 					else {
 						sb.append( paper.author.substring( startIndex ) )
@@ -550,23 +550,23 @@ class PublicationManager {
 						  .append( "<font color=red>" )
 						  .append( paper.etc )
 						  .append( "</font>)");
-					}	
-					if ( paper.pdf == PDF ) sb.append( "<br>[<a href='/pub/" + paper.id + ".pdf'>pdf</a>]");
+					}
+					if ( paper.pdf == PDF ) sb.append( "<br>[<a href='/MARS/pub/" + paper.id + ".pdf'>pdf</a>]");
 					if ( paper.slide == PPS ) {
 						if ( paper.pdf == NONE ) sb.append( "<br>" );
-						sb.append( " [<a href='/present/" + paper.id + ".pps'>slides</a>]");
+						sb.append( " [<a href='/MARS/present/" + paper.id + ".pps'>slides</a>]");
 					}
 					else if ( paper.slide == PPT ) {
 						if ( paper.pdf == NONE ) sb.append( "<br>" );
-						sb.append( " [<a href='/present/" + paper.id + ".ppt'>slides</a>]");
+						sb.append( " [<a href='/MARS/present/" + paper.id + ".ppt'>slides</a>]");
 					}
 					else if ( paper.slide == PPTX ) {
 						if ( paper.pdf == NONE ) sb.append( "<br>" );
-						sb.append( " [<a href='/present/" + paper.id + ".pptx'>slides</a>]");
+						sb.append( " [<a href='/MARS/present/" + paper.id + ".pptx'>slides</a>]");
 					}
 					else if ( paper.slide == PDF ) {
 						if ( paper.pdf == NONE ) sb.append( "<br>" );
-						sb.append( " [<a href='/present/" + paper.id + ".pdf'>slides</a>]");
+						sb.append( " [<a href='/MARS/present/" + paper.id + ".pdf'>slides</a>]");
 					}
 					sb.append( "</span></td></tr>\n" );
 				}
@@ -581,7 +581,7 @@ class PublicationManager {
 		catch(Exception e) {
 			System.err.println( e );
 		}
-		
+
 	}
 
 	private static String bookTitle(Papers paper) {
@@ -611,7 +611,7 @@ class PublicationManager {
 		else {
 			sb.append( paper.bookTitle );
 		}
-		
+
 		return sb.toString();
 	}
 }
