@@ -1,10 +1,10 @@
-							<tr><td><img src='img/w_bg.gif' width=1px height=50px></td></tr>
+							<tr><td><img src='/MARS/img/w_bg.gif' width=1px height=50px></td></tr>
 						</table>
 					</td>
 				</tr>
 				<tr>
 					<td align=center>
-						<img src='img/4_bg.gif' width=760px height=1px>
+						<img src='/MARS/img/4_bg.gif' width=760px height=1px>
 					</td>
 				</tr>
 				<tr>
@@ -36,12 +36,12 @@
 				</tr>
 			</table>
 		</td>
-		<td background='img/4_08.gif' width=30px></td>
+		<td background='/MARS/img/4_08.gif' width=30px></td>
 		<td></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td colspan=3><img src='img/4_10.gif'></td>
+		<td colspan=3><img src='/MARS/img/4_10.gif'></td>
 		<td></td>
 	</tr>
 	<tr height=50px>
