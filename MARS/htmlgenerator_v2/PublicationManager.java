@@ -49,6 +49,7 @@ class PublicationManager {
 
 		generateByDate( "all" );
 
+		generateByField("ml", "ml");
 		generateByField( "uarch", "uarch" );
 		generateByField( "secure", "secure" );
 		generateByField( "embed", "embed" );
