@@ -49,7 +49,8 @@ class PublicationManager {
 
 		generateByDate( "all" );
 
-		generateByField("ml", "ml");
+		generateByField( "ml", "ml" );
+		generateByField( "sustainability", "sustainability" );
 		generateByField( "uarch", "uarch" );
 		generateByField( "secure", "secure" );
 		generateByField( "embed", "embed" );
