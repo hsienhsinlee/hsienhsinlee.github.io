@@ -58,7 +58,7 @@ sub publicationByName {
 sub publicationByField {
 
 	my @types = ( "all", "journal", "conference", "workshop+poster", "bookchapters", "thesis" );
-	my @fields = ( "all", "ml", "ieeemicroeic", "sustainability", "uarch", "secure", "embed", "lpower", "fpga", "soc", "parallel", "gfx" );
+	my @fields = ( "all", "ieeemicroeic", "ml", "sustainability", "uarch", "secure", "embed", "lpower", "fpga", "soc", "parallel", "gfx" );
 
 	my @type_title = (
 				"All Papers",
