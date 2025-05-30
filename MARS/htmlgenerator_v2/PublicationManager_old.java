@@ -49,7 +49,6 @@ class PublicationManager {
 
 		generateByDate( "all" );
 
-		generateByField( "ieeemicroeic", "ieeemicroeic" );
 		generateByField( "ml", "ml" );
 		generateByField( "sustainability", "sustainability" );
 		generateByField( "uarch", "uarch" );
