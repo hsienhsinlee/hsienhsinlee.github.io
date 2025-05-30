@@ -127,8 +127,8 @@ sub publicationByField {
 
 }
 
-shellCmd( "javac PublicationManager.java" );
-shellCmd( "java PublicationManager" );
+#shellCmd( "javac PublicationManager.java" );
+#shellCmd( "java PublicationManager" );
 
 publicationByProject( "research-secure", "research-sec" );
 publicationByProject( "research-pod", "research-pod" );
