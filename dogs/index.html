@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Take Me Home — Dog Adoption Predictor</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── reset & base ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange:  #FF6B35;
+      --orange2: #E85D24;
+      --peach:   #FFECD2;
+      --tan:     #F7C59F;
+      --cream:   #FFF8F0;
+      --blue:    #4A90D9;
+      --blue2:   #3178C6;
+      --brown:   #5C3A1E;
+      --brown2:  #3D2414;
+      --gray:    #9B8B80;
+      --white:   #FFFFFF;
+      --shadow:  0 4px 24px rgba(92,58,30,.13);
+      --radius:  18px;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--brown);
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── hero header ────────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, #FF6B35 0%, #FFa06a 60%, #FFECD2 100%);
+      padding: 40px 20px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: "🐾  🐾  🐾  🐾  🐾  🐾  🐾  🐾  🐾  🐾";
+      position: absolute;
+      top: 8px; left: 0; right: 0;
+      font-size: 1.3rem;
+      opacity: .18;
+      letter-spacing: 12px;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .title-word {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 900;
+      color: var(--white);
+      text-shadow: 0 2px 8px rgba(0,0,0,.18);
+      letter-spacing: 1px;
+    }
+
+    /* ── animated dog photo icons ───────────────────────────────── */
+    .dog-icon {
+      width: clamp(72px, 11vw, 100px);
+      height: clamp(72px, 11vw, 100px);
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,.8);
+      box-shadow: 0 4px 16px rgba(0,0,0,.28);
+    }
+    .dog-bulldog {
+      object-position: center 30%;
+      animation: bob-left 2.6s ease-in-out infinite;
+    }
+    .dog-shiba {
+      object-position: center 18%;
+      animation: bob-right 1.4s ease-in-out infinite;
+      animation-delay: .6s;
+    }
+    @keyframes bob-left {
+      0%,100% { transform: rotate(-4deg) translateY(0); }
+      50%      { transform: rotate( 3deg) translateY(-5px); }
+    }
+    @keyframes bob-right {
+      0%,100% { transform: rotate( 4deg) translateY(0); }
+      50%      { transform: rotate(-3deg) translateY(-5px); }
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: rgba(255,255,255,.88);
+      letter-spacing: .5px;
+    }
+
+    /* ── model loading banner ───────────────────────────────────── */
+    #model-banner {
+      background: #FFF3CD;
+      border-bottom: 2px solid #FFD54F;
+      padding: 10px 20px;
+      text-align: center;
+      font-size: .9rem;
+      font-weight: 700;
+      color: #5C4A00;
+    }
+    #model-banner.ready {
+      background: #E8F5E9;
+      border-color: #A5D6A7;
+      color: #2E7D32;
+    }
+    #model-banner.hidden { display: none; }
+
+    /* ── layout container ───────────────────────────────────────── */
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* ── card ───────────────────────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 32px;
+      margin-top: 28px;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--orange2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title span { font-size: 1.3rem; }
+
+    /* ── form grid ──────────────────────────────────────────────── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 24px;
+    }
+    @media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--brown);
+      letter-spacing: .3px;
+    }
+
+    select, input[type="number"], input[type="date"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #E8D5C4;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: .95rem;
+      color: var(--brown);
+      background: var(--cream);
+      transition: border-color .2s, box-shadow .2s;
+      appearance: none;
+    }
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23FF6B35' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+    select:focus, input:focus {
+      outline: none;
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255,107,53,.15);
+    }
+
+    /* ── age row ────────────────────────────────────────────────── */
+    .age-row { display: flex; gap: 8px; }
+    .age-row input  { flex: 1 1 80px; min-width: 0; }
+    .age-row select { flex: 1 1 120px; min-width: 0; }
+
+    /* ── toggle switches ────────────────────────────────────────── */
+    .toggle-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--cream);
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+    .toggle-label { font-size: .9rem; font-weight: 700; }
+
+    .switch { position: relative; display: inline-block; width: 46px; height: 26px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0;
+      background: #D5C4B8;
+      border-radius: 26px;
+      transition: .3s;
+      cursor: pointer;
+    }
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 20px; width: 20px;
+      left: 3px; bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: .3s;
+      box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    }
+    input:checked + .slider { background: var(--orange); }
+    input:checked + .slider::before { transform: translateX(20px); }
+
+    /* ── submit button ──────────────────────────────────────────── */
+    .predict-btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      letter-spacing: .5px;
+      margin-top: 10px;
+      box-shadow: 0 4px 16px rgba(255,107,53,.35);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .predict-btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,53,.45); }
+    .predict-btn:active { transform: translateY(0);    box-shadow: 0 2px 8px rgba(255,107,53,.3); }
+    .predict-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    /* ── result card ────────────────────────────────────────────── */
+    #result-card {
+      display: none;
+      background: linear-gradient(135deg, #3D7CBF 0%, #4A90D9 100%);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 30px rgba(74,144,217,.3);
+      padding: 32px;
+      margin-top: 24px;
+      color: white;
+      text-align: center;
+      animation: pop-in .4s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes pop-in {
+      from { opacity: 0; transform: scale(.9) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .result-headline {
+      font-size: .95rem;
+      font-weight: 700;
+      opacity: .85;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .result-days {
+      font-size: clamp(2.8rem, 8vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1;
+    }
+    .result-unit { font-size: 1.1rem; opacity: .8; margin-top: 4px; }
+    .result-range {
+      margin: 20px auto 0;
+      background: rgba(255,255,255,.15);
+      border-radius: 12px;
+      padding: 14px 20px;
+      display: inline-block;
+      min-width: 260px;
+    }
+    .result-range-label { font-size: .8rem; font-weight: 700; opacity: .75; text-transform: uppercase; letter-spacing: .8px; }
+    .result-range-val   { font-size: 1.4rem; font-weight: 800; margin-top: 4px; }
+
+    .paw-row { font-size: 1.8rem; margin-top: 18px; letter-spacing: 6px; opacity: .5; }
+
+    /* ── loading spinner ────────────────────────────────────────── */
+    .spinner {
+      display: none;
+      width: 40px; height: 40px;
+      border: 4px solid rgba(255,107,53,.2);
+      border-top-color: var(--orange);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 20px auto 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── error message ──────────────────────────────────────────── */
+    #error-msg {
+      display: none;
+      background: #FFF0F0;
+      border: 2px solid #FFB3B3;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      color: #C0392B;
+      font-weight: 700;
+      font-size: .95rem;
+    }
+
+    /* ── footer ─────────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: .8rem;
+      color: var(--gray);
+    }
+    footer a { color: var(--orange); text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════ MODEL LOADING BANNER ════════════════════════ -->
+<div id="model-banner">⏳ Loading prediction model… (one-time download ~3.8 MB)</div>
+
+<!-- ════════════════════════ HEADER ════════════════════════ -->
+<header>
+  <div class="title-row">
+    <span class="title-word">Take Me</span>
+
+    <!-- English Bulldog — real photo, circular crop -->
+    <img class="dog-icon dog-bulldog"
+         src="https://upload.wikimedia.org/wikipedia/commons/d/d8/I_AM_Smiling.jpg"
+         alt="Happy English Bulldog smiling" />
+
+    <!-- Shiba Inu — real photo, circular crop -->
+    <img class="dog-icon dog-shiba"
+         src="https://upload.wikimedia.org/wikipedia/commons/9/90/Taro_shiba%2C_smiling_crossed_paw_pose_in_jaycee_park.jpg"
+         alt="Happy Shiba Inu smiling with crossed paws" />
+
+    <span class="title-word">Home</span>
+  </div>
+  <p class="subtitle">How many days will this pup wait for a family? 🐾</p>
+</header>
+
+<!-- ════════════════════════ MAIN ════════════════════════ -->
+<div class="container">
+
+  <!-- ── Intake info ────────────────────────────────────────────── -->
+  <div class="card">
+    <div class="card-title"><span>🏠</span> Shelter Intake</div>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="intake_type">Intake Type</label>
+        <select id="intake_type">
+          <option value="Stray">Stray</option>
+          <option value="Owner Surrender">Owner Surrender</option>
+          <option value="Public Assist">Public Assist</option>
+          <option value="Abandoned">Abandoned</option>
+          <option value="Euthanasia Request">Euthanasia Request</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="intake_condition">Intake Condition</label>
+        <select id="intake_condition">
+          <option value="Normal">Normal</option>
+          <option value="Sick">Sick</option>
+          <option value="Injured">Injured</option>
+          <option value="Aged">Aged</option>
+          <option value="Feral">Feral</option>
+          <option value="Behavior">Behavior</option>
+          <option value="Medical">Medical</option>
+          <option value="Med Attn">Med Attn</option>
+          <option value="Neonatal">Neonatal</option>
+          <option value="Nursing">Nursing</option>
+          <option value="Pregnant">Pregnant</option>
+          <option value="Unknown">Unknown</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="field full">
+        <label for="intake_date">Intake Date</label>
+        <input type="date" id="intake_date" />
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Dog profile ───────────────────────────────────────────── -->
+  <div class="card">
+    <div class="card-title"><span>🐕</span> Dog Profile</div>
+    <div class="form-grid">
+
+      <div class="field">
+        <label>Age</label>
+        <div class="age-row">
+          <input type="number" id="age_val" min="0" step="0.5" value="2" placeholder="e.g. 2" />
+          <select id="age_unit">
+            <option value="years">Years</option>
+            <option value="months">Months</option>
+            <option value="weeks">Weeks</option>
+            <option value="days">Days</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="sex">Sex</label>
+        <select id="sex">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Unknown">Unknown</option>
+        </select>
+      </div>
+
+      <div class="field full">
+        <label for="breed">Breed</label>
+        <select id="breed">
+          <optgroup label="Common Breeds">
+            <option value="Labrador Retriever">Labrador Retriever</option>
+            <option value="Labrador Retriever Mix">Labrador Retriever Mix</option>
+            <option value="Pit Bull">Pit Bull</option>
+            <option value="Pit Bull Mix">Pit Bull Mix</option>
+            <option value="Chihuahua Shorthair">Chihuahua Shorthair</option>
+            <option value="Chihuahua Shorthair Mix">Chihuahua Shorthair Mix</option>
+            <option value="German Shepherd">German Shepherd</option>
+            <option value="German Shepherd Mix">German Shepherd Mix</option>
+            <option value="Australian Cattle Dog">Australian Cattle Dog</option>
+            <option value="Australian Cattle Dog Mix">Australian Cattle Dog Mix</option>
+            <option value="Boxer">Boxer</option>
+            <option value="Boxer Mix">Boxer Mix</option>
+            <option value="Beagle">Beagle</option>
+            <option value="Beagle Mix">Beagle Mix</option>
+            <option value="Dachshund">Dachshund</option>
+            <option value="Dachshund Mix">Dachshund Mix</option>
+            <option value="Rottweiler">Rottweiler</option>
+            <option value="Rottweiler Mix">Rottweiler Mix</option>
+            <option value="Golden Retriever">Golden Retriever</option>
+            <option value="Golden Retriever Mix">Golden Retriever Mix</option>
+            <option value="Siberian Husky">Siberian Husky</option>
+            <option value="Siberian Husky Mix">Siberian Husky Mix</option>
+            <option value="Australian Shepherd">Australian Shepherd</option>
+            <option value="Australian Shepherd Mix">Australian Shepherd Mix</option>
+            <option value="Border Collie">Border Collie</option>
+            <option value="Border Collie Mix">Border Collie Mix</option>
+            <option value="Poodle (Miniature)">Miniature Poodle</option>
+            <option value="Miniature Poodle Mix">Miniature Poodle Mix</option>
+            <option value="Shih Tzu">Shih Tzu</option>
+            <option value="Shih Tzu Mix">Shih Tzu Mix</option>
+            <option value="Yorkshire Terrier">Yorkshire Terrier</option>
+            <option value="Yorkshire Terrier Mix">Yorkshire Terrier Mix</option>
+            <option value="Jack Russell Terrier">Jack Russell Terrier</option>
+            <option value="Jack Russell Terrier Mix">Jack Russell Terrier Mix</option>
+            <option value="Pug">Pug</option>
+            <option value="Pug Mix">Pug Mix</option>
+            <option value="Great Pyrenees">Great Pyrenees</option>
+            <option value="Great Pyrenees Mix">Great Pyrenees Mix</option>
+            <option value="Catahoula">Catahoula</option>
+            <option value="Catahoula Mix">Catahoula Mix</option>
+            <option value="American Bulldog">American Bulldog</option>
+            <option value="American Bulldog Mix">American Bulldog Mix</option>
+            <option value="American Staffordshire Terrier">American Staffordshire Terrier</option>
+            <option value="American Staffordshire Terrier Mix">American Staffordshire Terrier Mix</option>
+            <option value="Staffordshire">Staffordshire</option>
+            <option value="Cocker Spaniel">Cocker Spaniel</option>
+            <option value="Cocker Spaniel Mix">Cocker Spaniel Mix</option>
+            <option value="Pomeranian">Pomeranian</option>
+            <option value="Pomeranian Mix">Pomeranian Mix</option>
+            <option value="Maltese">Maltese</option>
+            <option value="Maltese Mix">Maltese Mix</option>
+            <option value="Miniature Schnauzer">Miniature Schnauzer</option>
+            <option value="Miniature Schnauzer Mix">Miniature Schnauzer Mix</option>
+            <option value="Great Dane">Great Dane</option>
+            <option value="Great Dane Mix">Great Dane Mix</option>
+            <option value="Rat Terrier">Rat Terrier</option>
+            <option value="Rat Terrier Mix">Rat Terrier Mix</option>
+            <option value="Doberman Pinsch">Doberman Pinsch</option>
+            <option value="Doberman Pinsch Mix">Doberman Pinsch Mix</option>
+            <option value="Plott Hound">Plott Hound</option>
+            <option value="Plott Hound Mix">Plott Hound Mix</option>
+            <option value="Basset Hound">Basset Hound</option>
+            <option value="Basset Hound Mix">Basset Hound Mix</option>
+            <option value="Blue Lacy">Blue Lacy</option>
+            <option value="Blue Lacy Mix">Blue Lacy Mix</option>
+            <option value="Black Mouth Cur">Black Mouth Cur</option>
+            <option value="Black Mouth Cur Mix">Black Mouth Cur Mix</option>
+            <option value="Pointer">Pointer</option>
+            <option value="Pointer Mix">Pointer Mix</option>
+            <option value="Akita">Akita</option>
+            <option value="Akita Mix">Akita Mix</option>
+            <option value="Chow Chow">Chow Chow</option>
+            <option value="Chow Chow Mix">Chow Chow Mix</option>
+            <option value="Bulldog">Bulldog</option>
+            <option value="Bulldog Mix">Bulldog Mix</option>
+            <option value="French Bulldog">French Bulldog</option>
+            <option value="Mastiff">Mastiff</option>
+            <option value="Mastiff Mix">Mastiff Mix</option>
+            <option value="Vizsla">Vizsla</option>
+            <option value="Vizsla Mix">Vizsla Mix</option>
+            <option value="Carolina Dog">Carolina Dog</option>
+            <option value="Carolina Dog Mix">Carolina Dog Mix</option>
+            <option value="Rhod Ridgeback">Rhodesian Ridgeback</option>
+            <option value="Rhod Ridgeback Mix">Rhodesian Ridgeback Mix</option>
+            <option value="Belgian Malinois">Belgian Malinois</option>
+            <option value="Belgian Malinois Mix">Belgian Malinois Mix</option>
+            <option value="Alaskan Husky">Alaskan Husky</option>
+            <option value="Alaskan Husky Mix">Alaskan Husky Mix</option>
+            <option value="Alaskan Malamute">Alaskan Malamute</option>
+            <option value="Alaskan Malamute Mix">Alaskan Malamute Mix</option>
+            <option value="German Shorthair Pointer">German Shorthair Pointer</option>
+            <option value="German Shorthair Pointer Mix">German Shorthair Pointer Mix</option>
+          </optgroup>
+          <optgroup label="Other">
+            <option value="Other" selected>Other / Not Listed</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="primary_color">Primary Color</label>
+        <select id="primary_color">
+          <option value="Black">Black</option>
+          <option value="Brown" selected>Brown</option>
+          <option value="White">White</option>
+          <option value="Tan">Tan</option>
+          <option value="Yellow">Yellow</option>
+          <option value="Red">Red</option>
+          <option value="Gray">Gray</option>
+          <option value="Cream">Cream</option>
+          <option value="Blue">Blue</option>
+          <option value="Fawn">Fawn</option>
+          <option value="Gold">Gold</option>
+          <option value="Chocolate">Chocolate</option>
+          <option value="Tricolor">Tricolor</option>
+          <option value="Sable">Sable</option>
+          <option value="Brindle">Brown Brindle</option>
+          <option value="Black Brindle">Black Brindle</option>
+          <option value="Yellow Brindle">Yellow Brindle</option>
+          <option value="Blue Merle">Blue Merle</option>
+          <option value="Red Merle">Red Merle</option>
+          <option value="Brown Merle">Brown Merle</option>
+          <option value="Blue Tick">Blue Tick</option>
+          <option value="Red Tick">Red Tick</option>
+          <option value="Silver">Silver</option>
+          <option value="Apricot">Apricot</option>
+          <option value="Buff">Buff</option>
+          <option value="Liver">Liver</option>
+          <option value="Orange">Orange</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Characteristics toggles ──────────────────────────────── -->
+  <div class="card">
+    <div class="card-title"><span>✨</span> Characteristics</div>
+    <div class="toggle-group">
+
+      <div class="toggle-item">
+        <span class="toggle-label">🏷️ Has a name</span>
+        <label class="switch">
+          <input type="checkbox" id="is_named" checked />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-item">
+        <span class="toggle-label">✂️ Spayed / Neutered</span>
+        <label class="switch">
+          <input type="checkbox" id="is_neutered" checked />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-item">
+        <span class="toggle-label">🔀 Mixed breed</span>
+        <label class="switch">
+          <input type="checkbox" id="is_mixed" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Submit ─────────────────────────────────────────────────── -->
+  <div class="card">
+    <button class="predict-btn" id="predict-btn" onclick="runPredict()" disabled>
+      ⏳ Loading model…
+    </button>
+    <div class="spinner" id="spinner"></div>
+    <div id="error-msg"></div>
+  </div>
+
+  <!-- ── Result ─────────────────────────────────────────────────── -->
+  <div id="result-card">
+    <div class="result-headline">Estimated Days Until Adoption</div>
+    <div class="result-days" id="r-days">—</div>
+    <div class="result-unit" id="r-weeks"></div>
+    <div class="result-range">
+      <div class="result-range-label">Likely Range (± model error)</div>
+      <div class="result-range-val" id="r-range">— days</div>
+    </div>
+    <div class="paw-row">🐾 🐾 🐾</div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>Built with ❤️ for MIT 15.727 Analytical Edge · <a href="https://hsienhsinlee.github.io/" target="_blank">hsienhsinlee.github.io</a></p>
+  <p style="margin-top:6px">Model: XGBoost · Austin Animal Center data · MAE ≈ 19 days · Runs entirely in your browser</p>
+</footer>
+
+<!-- ════════════════════════ SCRIPT ════════════════════════ -->
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// XGBoost inference engine (JavaScript)
+// Traverses the compact array-based tree format from XGBoost's JSON export.
+// ─────────────────────────────────────────────────────────────────────────────
+
+let MODEL     = null;   // parsed XGBoost JSON trees
+let META      = null;   // target encoders + feature list + MAE
+let BASE_SCORE = 0;
+
+const LARGE_BREEDS = new Set([
+  "labrador retriever","german shepherd","golden retriever","rottweiler",
+  "great dane","saint bernard","husky","malamute","akita","doberman",
+  "weimaraner","boxer","bernese mountain","newfoundland","great pyrenees",
+  "irish wolfhound","cane corso","mastiff",
+]);
+const BULLY_BREEDS = new Set([
+  "pit bull","staffordshire","american bulldog","bull terrier","american bully",
+]);
+
+// ── Predict with one XGBoost tree (array-format) ─────────────────────────────
+function predictOneTree(tree, featureVec) {
+  const { left_children, right_children, split_indices,
+          split_conditions, default_left, base_weights } = tree;
+  let node = 0;
+  while (left_children[node] !== -1) {
+    const featIdx = split_indices[node];
+    const thresh  = split_conditions[node];
+    const val     = featureVec[featIdx];
+    let goLeft;
+    if (val === null || val === undefined || isNaN(val)) {
+      goLeft = default_left[node] === 1;
+    } else {
+      goLeft = val < thresh;
+    }
+    node = goLeft ? left_children[node] : right_children[node];
+  }
+  return base_weights[node];
+}
+
+// ── Run full XGBoost ensemble ─────────────────────────────────────────────────
+function xgbPredict(featureVec) {
+  const trees = MODEL.learner.gradient_booster.model.trees;
+  let score = BASE_SCORE;
+  for (const tree of trees) {
+    score += predictOneTree(tree, featureVec);
+  }
+  return score;   // log-scale prediction
+}
+
+// ── Age bucket ───────────────────────────────────────────────────────────────
+function ageBucket(days) {
+  if (days <   60) return "puppy";
+  if (days <  365) return "young";
+  if (days < 2190) return "adult";
+  return "senior";
+}
+
+// ── Build feature vector from form values ─────────────────────────────────────
+function buildFeatureVec(animal) {
+  const enc       = META.target_encoders;
+  const globalMu  = META.global_mean;
+  const features  = META.features;   // ordered list matching training
+
+  function te(col, val) {
+    const map = enc[col];
+    return (map && map[val] !== undefined) ? map[val] : globalMu;
+  }
+
+  const ageDays    = animal.age_days;
+  const bucket     = ageBucket(ageDays);
+  const breedLower = (animal.breed_grouped || "").toLowerCase();
+  const colorLower = (animal.primary_color || "").toLowerCase();
+  const condLower  = (animal["Intake Condition"] || "").toLowerCase();
+
+  const is_black       = colorLower.startsWith("black") ? 1 : 0;
+  const is_large_breed = [...LARGE_BREEDS].some(lb => breedLower.includes(lb)) ? 1 : 0;
+  const is_bully_breed = [...BULLY_BREEDS].some(bb => breedLower.includes(bb)) ? 1 : 0;
+  const sick_senior    = (["sick","injured"].some(k => condLower.includes(k)) && ageDays > 2190) ? 1 : 0;
+
+  const raw = {
+    "Intake Type_te"      : te("Intake Type",       animal["Intake Type"]),
+    "Intake Condition_te" : te("Intake Condition",   animal["Intake Condition"]),
+    "age_days"            : ageDays,
+    "age_bucket_te"       : te("age_bucket",         bucket),
+    "is_named"            : animal.is_named,
+    "intake_month"        : animal.intake_month,
+    "intake_dayofweek"    : animal.intake_dayofweek,
+    "is_mixed"            : animal.is_mixed,
+    "primary_color_te"    : te("primary_color",      animal.primary_color),
+    "is_neutered"         : animal.is_neutered,
+    "sex_te"              : te("sex",                animal.sex),
+    "breed_grouped_te"    : te("breed_grouped",      animal.breed_grouped),
+    "is_black"            : is_black,
+    "is_large_breed"      : is_large_breed,
+    "is_bully_breed"      : is_bully_breed,
+    "sick_senior"         : sick_senior,
+  };
+
+  // Return as ordered array matching features list
+  return features.map(f => raw[f]);
+}
+
+// ── Load model + meta from same-origin JSON files ─────────────────────────────
+async function loadModel() {
+  const banner = document.getElementById('model-banner');
+  try {
+    const [modelResp, metaResp] = await Promise.all([
+      fetch('dog_model.json'),
+      fetch('dog_meta.json'),
+    ]);
+    MODEL = await modelResp.json();
+    META  = await metaResp.json();
+
+    // Parse base_score (stored as "[2.639999E0]" string in XGBoost JSON)
+    const rawBS = MODEL.learner.learner_model_param.base_score;
+    BASE_SCORE = parseFloat(String(rawBS).replace(/[\[\]]/g, ''));
+
+    banner.textContent = '✅ Model ready — predictions run locally in your browser';
+    banner.classList.add('ready');
+    setTimeout(() => banner.classList.add('hidden'), 3000);
+
+    const btn = document.getElementById('predict-btn');
+    btn.disabled    = false;
+    btn.textContent = '🐾 Predict Adoption Wait Time';
+  } catch (e) {
+    banner.textContent = '❌ Failed to load model: ' + e.message;
+    console.error(e);
+  }
+}
+
+// ── Form helpers ─────────────────────────────────────────────────────────────
+(function setDefaultDate() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  document.getElementById('intake_date').value =
+    `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+})();
+
+function ageToDays() {
+  const val  = parseFloat(document.getElementById('age_val').value) || 2;
+  const unit = document.getElementById('age_unit').value;
+  if (unit === 'years')  return val * 365;
+  if (unit === 'months') return val * 30;
+  if (unit === 'weeks')  return val * 7;
+  return val;
+}
+
+function getDateParts() {
+  const raw = document.getElementById('intake_date').value;
+  if (!raw) {
+    const n = new Date();
+    return { intake_month: n.getMonth()+1, intake_dayofweek: n.getDay()===0?6:n.getDay()-1 };
+  }
+  const d = new Date(raw + 'T12:00:00');
+  return { intake_month: d.getMonth()+1, intake_dayofweek: d.getDay()===0?6:d.getDay()-1 };
+}
+
+function val(id)  { return document.getElementById(id).value; }
+function chk(id)  { return document.getElementById(id).checked ? 1 : 0; }
+
+// ── Main predict handler ──────────────────────────────────────────────────────
+function runPredict() {
+  if (!MODEL || !META) return;
+
+  const btn     = document.getElementById('predict-btn');
+  const spinner = document.getElementById('spinner');
+  const errDiv  = document.getElementById('error-msg');
+  const resCard = document.getElementById('result-card');
+
+  resCard.style.display = 'none';
+  errDiv.style.display  = 'none';
+  btn.disabled          = true;
+  spinner.style.display = 'block';
+
+  try {
+    const { intake_month, intake_dayofweek } = getDateParts();
+
+    const animal = {
+      "Intake Type"     : val('intake_type'),
+      "Intake Condition": val('intake_condition'),
+      "age_days"        : ageToDays(),
+      "sex"             : val('sex'),
+      "breed_grouped"   : val('breed'),
+      "primary_color"   : val('primary_color'),
+      "is_named"        : chk('is_named'),
+      "is_neutered"     : chk('is_neutered'),
+      "is_mixed"        : chk('is_mixed'),
+      "intake_month"    : intake_month,
+      "intake_dayofweek": intake_dayofweek,
+    };
+
+    const featureVec  = buildFeatureVec(animal);
+    const logPred     = xgbPredict(featureVec);
+    const predDays    = Math.exp(logPred) - 1;          // expm1
+    const maeDays     = META.mae_days;
+
+    document.getElementById('r-days').textContent  = `${predDays.toFixed(1)} days`;
+    document.getElementById('r-weeks').textContent = `≈ ${(predDays/7).toFixed(1)} weeks`;
+    document.getElementById('r-range').textContent =
+      `${Math.max(predDays - maeDays, 0).toFixed(1)} – ${(predDays + maeDays).toFixed(1)} days`;
+
+    resCard.style.display = 'block';
+    resCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  } catch (e) {
+    errDiv.textContent   = `⚠️ ${e.message}`;
+    errDiv.style.display = 'block';
+    console.error(e);
+  } finally {
+    spinner.style.display = 'none';
+    btn.disabled          = false;
+  }
+}
+
+// ── Kick off model load immediately ──────────────────────────────────────────
+loadModel();
+</script>
+</body>
+</html>
